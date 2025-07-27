@@ -2,6 +2,7 @@ const form = document.getElementById('add-form');
 const input = document.getElementById('item-name');
 const list = document.getElementById('items-list');
 
+
 async function fetchItems() {
     const res = await fetch('/api/items');
     const items = await res.json();
@@ -49,5 +50,11 @@ async function editItem(id, name) {
         body: JSON.stringify({ name })
     });
 }
+
+document.getElementById('logout-btn').addEventListener('click', function () {
+    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+    window.location.reload();
+});
+
 
 fetchItems();

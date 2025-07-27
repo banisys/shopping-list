@@ -7,7 +7,7 @@ body {
 .container {
     background: #fff;
     padding: 2rem;
-    max-width: 600px;
+    max-width: 400px;
     margin: auto;
     border-radius: 10px;
     box-shadow: 0 0 10px #ccc;
@@ -15,12 +15,13 @@ body {
 
 form {
     display: flex;
+    flex-direction: column;
+    /* تغییر به ستونی */
     gap: 1rem;
     margin-bottom: 2rem;
 }
 
 input[type="text"] {
-    flex: 1;
     padding: 0.5rem;
 }
 
@@ -43,4 +44,20 @@ li {
 li span {
     flex: 1;
     margin-left: 1rem;
+}
+
+.logout-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    background: #cc0000;
 }
