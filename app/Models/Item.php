@@ -61,12 +61,12 @@ class Item extends Model
      */
     public function save(): void
     {
+        $isChecked = filter_var($this->is_checked, FILTER_VALIDATE_BOOLEAN) ? 1 : 0;
+
         if (isset($this->id)) {
-            $isChecked = filter_var($this->is_checked, FILTER_VALIDATE_BOOLEAN) ? 1 : 0;
             $stmt = self::db()->prepare("UPDATE items SET name = ?, is_checked = ? WHERE id = ?");
             $stmt->execute([$this->name, $isChecked, $this->id]);
         } else {
-            $isChecked = filter_var($this->is_checked, FILTER_VALIDATE_BOOLEAN) ? 1 : 0;
             $stmt = self::db()->prepare("INSERT INTO items (name, is_checked) VALUES (?, ?)");
             $stmt->execute([$this->name, $isChecked]);
             $this->id = self::db()->lastInsertId();

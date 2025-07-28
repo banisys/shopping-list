@@ -3,6 +3,7 @@
 namespace App\Core;
 
 use App\Controllers\ItemController;
+use App\Controllers\AuthController;
 
 class Router
 {
@@ -25,7 +26,23 @@ class Router
         $method = $this->request->method();
         $uri = trim($this->request->uri(), '/');
 
+        if ($uri === 'api/login' && $method === 'POST') {
+            (new AuthController)->login();
+        }
+
+        if ($uri === 'api/register' && $method === 'POST') {
+            (new AuthController)->register();
+        }
+
         if ($uri === 'api/items' && $method === 'GET') {
+
+            $user = Auth::user();
+            if (!$user) {
+                http_response_code(401);
+                echo json_encode(['error' => 'Unauthorized']);
+                return;
+            }
+
             (new ItemController)->index();
         }
 
@@ -45,7 +62,33 @@ class Router
             (new ItemController)->destroy($matches[1]);
         }
 
+        if ($uri === 'login') {
+            $user = Auth::user();
+            if ($user) {
+                header("Location: /items");
+                die();
+            }
+            require __DIR__ . '/../Views/auth/login.php';
+            exit;
+        }
+
+        if ($uri === 'register') {
+            $user = Auth::user();
+            if ($user) {
+                header("Location: /items");
+                die();
+            }
+            require __DIR__ . '/../Views/auth/register.php';
+            exit;
+        }
+
         if ($uri === '' || $uri === 'items') {
+            $user = Auth::user();
+            if (!$user) {
+                header("Location: /login");
+                die();
+            }
+
             require __DIR__ . '/../Views/items/index.php';
             exit;
         }
